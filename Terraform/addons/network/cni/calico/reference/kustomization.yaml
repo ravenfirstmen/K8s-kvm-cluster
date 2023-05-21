@@ -1,0 +1,2 @@
+resources:
+  - "./calico-3.25.1.yaml" # from: https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml

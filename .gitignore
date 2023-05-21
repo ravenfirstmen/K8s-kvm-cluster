@@ -1,0 +1,11 @@
+.vscode/settings.json
+**/.terraform*
+**/terraform.*
+**/*.pem
+**/*.der
+**/unseal-info.json
+**/.idea
+**/vault-scripts/**/*.json
+**/key-packer*
+**/manifest.json
+**/**/*.img

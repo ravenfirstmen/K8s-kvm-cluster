@@ -1,0 +1,17 @@
+resources:
+  - "./reference"
+  - "./admin-user.yaml"
+  - "./ingress.yaml"
+patches:
+  - path: ./deploy-with-custom-certs.yaml
+    target:
+      version: v1
+      kind: Deployment
+      name: kubernetes-dashboard
+      namespace: kubernetes-dashboard
+  - path: ./custom-certs-secrets.yaml
+    target:
+      version: v1
+      kind: Secret
+      name: kubernetes-dashboard-certs
+      namespace: kubernetes-dashboard

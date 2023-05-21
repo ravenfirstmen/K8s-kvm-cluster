@@ -1,0 +1,11 @@
+resources:
+- ./grafana-certs-secrets.yaml
+- ./prometheus-certs-secrets.yaml
+- ./alertmanager-certs-secrets.yaml
+- ./reference
+- ./grafana-ingress.yaml
+- ./grafana-inbound-policy.yaml
+- ./prometheus-ingress.yaml
+- ./prometheus-inbound-policy.yaml
+- ./alertmanager-ingress.yaml
+- ./alertmanager-inbound-policy.yaml

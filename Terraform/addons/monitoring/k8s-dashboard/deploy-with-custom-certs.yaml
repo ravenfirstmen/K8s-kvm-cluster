@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+spec:
+  template:
+    spec:
+      containers:
+        - name: kubernetes-dashboard
+          args: 
+            - --tls-cert-file=/tls.crt
+            - --tls-key-file=/tls.key
+            - --namespace=kubernetes-dashboard            
