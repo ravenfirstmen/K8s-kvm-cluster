@@ -65,7 +65,7 @@ locals {
 }
 
 locals {
-  non_k8s_nodes =   { for s in [local.load_balancer_server] : s.name => s }
+  non_k8s_nodes   = { for s in [local.load_balancer_server] : s.name => s }
   k8s_nodes       = merge(local.zone1_k8s_cluster_nodes, local.zone2_k8s_cluster_nodes)
   all_machines    = merge(local.non_k8s_nodes, local.k8s_nodes)
   controler_nodes = [for key, node in local.k8s_nodes : node if node.is_controller]

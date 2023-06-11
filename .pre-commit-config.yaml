@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-json
+        name: global:formatting:json
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+        name: global:formatting:yaml
+      - id: end-of-file-fixer
+        name: global:formatting:EOF
+      - id: trailing-whitespace
+        name: global:formatting:whitespaces
+      - id: check-merge-conflict
+        name: global:git:conflict
+      - id: detect-private-key
+        name: security:detect-private-key
+      - id: detect-aws-credentials
+        name: security:detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+
+  # - repo: local
+  #   hooks:
+  #     - id: trivy
+  #       name: security:trivy:filesystem
+  #       description: Scanning file system for vulnerabilities
+  #       entry: trivy filesystem . --skip-files ".env"
+  #       language: system
+  #       pass_filenames: false

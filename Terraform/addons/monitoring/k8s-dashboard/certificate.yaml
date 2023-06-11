@@ -1,0 +1,51 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kubernetes-dashboard-cert
+  namespace: kubernetes-dashboard
+spec:
+  secretName: kubernetes-dashboard-certs
+
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+
+  secretTemplate:
+    labels:
+      k8s-app: kubernetes-dashboard
+
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizationalUnits:
+      - Escritorio
+    organizations:
+      - Casa
+    localities:
+      - Famalicao
+    provinces:
+      - Braga
+    countries:
+      - PT
+
+  isCA: false
+
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 4096
+
+  usages:
+    - server auth
+    - client auth
+    - key encipherment
+    - data encipherment
+    - digital signature
+
+  commonName: dashboard.k8s.local
+  dnsNames:
+    - dashboard
+    - dashboard.k8s.local
+
+  ipAddresses:
+    - 127.0.0.1

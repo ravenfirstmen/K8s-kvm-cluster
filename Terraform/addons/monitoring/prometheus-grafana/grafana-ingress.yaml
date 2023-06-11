@@ -5,7 +5,8 @@ metadata:
   namespace: monitoring
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    # nginx.ingress.kubernetes.io/backend-protocol: "HTTP"  
+    # nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   ingressClassName: nginx
   tls:

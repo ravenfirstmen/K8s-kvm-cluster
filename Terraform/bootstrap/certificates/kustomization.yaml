@@ -1,0 +1,4 @@
+resources:
+  - ./cert-manager-1.12.yaml
+  - ./cert-manager-metrics.yaml
+  - ./prometheus-roles.yaml

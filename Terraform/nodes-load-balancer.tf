@@ -28,10 +28,10 @@ chpasswd:
   users:
     - name: ubuntu
       password: ubuntu
-      type: text  
+      type: text
 
 ssh_authorized_keys:
-  - "${local.load_balancer_server.ssh_key}"  
+  - "${local.load_balancer_server.ssh_key}"
 
 ca_certs:
   trusted:
@@ -64,6 +64,7 @@ runcmd:
  - [ systemctl, disable, kubelet ]
 EOT
   }
+
 }
 
 # aolso expose well-know ports from the ingress controller service
@@ -73,7 +74,7 @@ data "template_file" "ha_proxy_nodes" {
 frontend http_front
     mode tcp
     bind *:80
-    option tcplog    
+    option tcplog
     default_backend http_back
 
 frontend https_front
@@ -103,7 +104,7 @@ listen stats
     mode http
     stats uri /
     stats hide-version
-    stats auth admin:admin    
+    stats auth admin:admin
   EOT
 }
 

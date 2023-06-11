@@ -1,0 +1,66 @@
+# apiVersion: installation.mattermost.com/v1beta1
+# kind: Mattermost
+# metadata:
+#   name: mattermost
+# spec:
+#   version: 5.31.0
+#   size: 50users
+#   ingress:
+#     enabled: true
+#     host: mattermost.k8s.local
+#     annotations:
+#       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+#       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+#     tlsSecret: "mattermost-tls"
+#   database:
+#     operatorManaged:
+#       replicas: 1
+#       resources:
+#         requests:
+#           cpu: 250m
+#           memory: 512Mi
+#       storageSize: 20Gi
+#       type: data
+#   fileStore:
+#     local:
+#       enabled: true
+#       storageSize: 10Gi
+
+  # mattermostEnv:
+  # - name: MM_FILESETTINGS_DRIVERNAME
+  #   value: local
+  # - name: MM_FILESETTINGS_DIRECTORY
+  #   value: /mattermost/data    # Or whatever is path of your volume mount
+
+# spec:
+#   fileStore:
+#     local:
+#       enabled: true
+#       storageSize: "10Gi" # Optional, defaults to 50Gi same as Minio
+
+apiVersion: installation.mattermost.com/v1beta1
+kind: Mattermost
+metadata:
+  name: mattermost
+spec:
+  version: 6.0.1
+  size: 50users
+  licenseSecret: ""
+  ingress:
+    enabled: false
+    # host: mattermost.k8s.local
+    # annotations:
+    #   nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    #   nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    # tlsSecret: "mattermost-tls"
+  database:
+    external:
+      secret: postgres-connection
+  fileStore:
+    local:
+      enabled: true
+      storageSize: 20Gi
+  elasticSearch:
+    host: ""
+    username: ""
+    password: ""

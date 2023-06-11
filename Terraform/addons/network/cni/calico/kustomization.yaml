@@ -1,9 +1,0 @@
-resources:
-  - "./reference"
-# patches:
-#   - path: ./ipv4-pool-cidr.yaml
-#     target:
-#       kind: DaemonSet
-#       version: v1
-#       name: calico-node
-#       namespace: kube-system

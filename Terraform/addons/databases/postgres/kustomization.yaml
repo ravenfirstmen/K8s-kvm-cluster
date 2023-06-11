@@ -1,0 +1,6 @@
+resources:
+  - "./namespace.yaml"
+  - "./volume.yaml"
+  - "./service.yaml"
+  - "./secrets.yaml"
+  - "./database.yaml"

@@ -1,0 +1,15 @@
+resources:
+  - "./local-path-storage.yaml"
+patches:
+  - path: ./default-class.yaml
+    target:
+      version: v1
+      kind: StorageClass
+      name: local-path
+
+  - path: ./mount-on-data-disk.yaml
+    target:
+      version: v1
+      kind: ConfigMap
+      name: local-path-config
+      namespace: local-path-storage

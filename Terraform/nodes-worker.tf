@@ -6,8 +6,22 @@ resource "libvirt_cloudinit_disk" "worker_cloudinit" {
   meta_data      = templatefile("${path.module}/cloud-init/meta_data.cfg.tpl", { machine_id = random_uuid.machine_id[each.key].result, hostname = each.value.name })
   network_config = templatefile("${path.module}/cloud-init/network_config.cfg.tpl", {})
 
-  user_data = data.template_cloudinit_config.config[each.key].rendered
+  user_data = data.template_cloudinit_config.config_worker_nodes[each.key].rendered
 }
+
+# device_aliases:
+#   data_disk: /dev/vdb
+# disk_setup:
+#   data_disk:
+#     table_type: gpt
+#     layout: true
+#     overwrite: true
+# fs_setup:
+# - label: data
+#   device: data_disk.1
+#   filesystem: ext4
+# mounts:
+# - ["data_disk.1", "/data"]
 
 
 resource "libvirt_domain" "worker-machine" {
@@ -34,6 +48,11 @@ resource "libvirt_domain" "worker-machine" {
 
   disk {
     volume_id = libvirt_volume.worker-node-vm-disk[each.key].id
+  }
+
+
+  disk {
+    volume_id = libvirt_volume.worker-node-vm-data-disk[each.key].id
   }
 
   console {
@@ -63,10 +82,18 @@ resource "libvirt_domain" "worker-machine" {
 resource "libvirt_volume" "worker-node-vm-disk" {
   for_each = local.worker_nodes
 
-  #   # workaround: depend on libvirt_ignition.ignition[each.key], otherwise the VM will use the old disk when the user-data changes
+  #   workaround: depend on libvirt_ignition.ignition[each.key], otherwise the VM will use the old disk when the user-data changes
   #   name           = "${each.value.name}-${md5(libvirt_ignition.worker_node_ignition[each.key].id)}.qcow2"
   name             = each.value.volume
   pool             = libvirt_pool.cluster.name
   base_volume_pool = var.base_volume_pool
   base_volume_name = var.base_volume_name
+}
+
+resource "libvirt_volume" "worker-node-vm-data-disk" {
+  for_each = local.worker_nodes
+
+  name = "${each.value.volume}-data"
+  pool = libvirt_pool.cluster.name
+  size = 20 * 1024 * 1024 * 1024
 }
