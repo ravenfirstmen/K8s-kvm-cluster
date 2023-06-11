@@ -19,11 +19,11 @@ repos:
         name: security:detect-aws-credentials
         args: ["--allow-missing-credentials"]
 
-  # - repo: local
-  #   hooks:
-  #     - id: trivy
-  #       name: security:trivy:filesystem
-  #       description: Scanning file system for vulnerabilities
-  #       entry: trivy filesystem . --skip-files ".env"
-  #       language: system
-  #       pass_filenames: false
+  - repo: local
+    hooks:
+      - id: trivy
+        name: security:trivy:filesystem
+        description: Scanning file system for vulnerabilities
+        entry: trivy filesystem . --skip-files ".env,**/*.pem,*/terraform.*,*/.terraform*,*/key-packer*,manifest.json"
+        language: system
+        pass_filenames: false
