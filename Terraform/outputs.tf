@@ -56,7 +56,7 @@ resource "local_file" "delete_routes_script" {
   content = <<EOF
   #!/bin/bash
 
-  # Execute this to remove the previous routing between the two networks
+  # Execute this to remove the routing between the two networks
 
   sudo iptables -D FORWARD -j ACCEPT -i ${libvirt_network.zone1_cluster_network.bridge} -o ${libvirt_network.zone2_cluster_network.bridge} -s "${var.network_zone1_cidr}" -d "${var.network_zone2_cidr}"
   sudo iptables -D FORWARD -j ACCEPT -i ${libvirt_network.zone2_cluster_network.bridge} -o ${libvirt_network.zone1_cluster_network.bridge} -s "${var.network_zone2_cidr}" -d "${var.network_zone1_cidr}"
@@ -66,4 +66,3 @@ resource "local_file" "delete_routes_script" {
   filename        = "./zones-routing-delete.sh"
   file_permission = "0700"
 }
-

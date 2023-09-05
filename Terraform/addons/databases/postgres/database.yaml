@@ -9,7 +9,7 @@ spec:
       app: postgres
       namespace: postgres
   serviceName: postgres
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:

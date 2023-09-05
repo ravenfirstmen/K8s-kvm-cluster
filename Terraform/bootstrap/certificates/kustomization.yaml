@@ -2,3 +2,17 @@ resources:
   - ./cert-manager-1.12.yaml
   - ./cert-manager-metrics.yaml
   - ./prometheus-roles.yaml
+
+patches:
+  - target:
+      version: v1
+      kind: Service
+      name: cert-manager
+      namespace: cert-manager
+    patch: |-
+      - op: add
+        path: "/metadata/annotations/prometheus.io~1scrape"
+        value: "true"
+      - op: add
+        path: "/metadata/annotations/prometheus.io~1port"
+        value: "9402"
