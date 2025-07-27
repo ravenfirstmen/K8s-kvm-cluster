@@ -1,23 +1,12 @@
 # About
 
-Packer manifests to create images (QEMU/LibVirt) for providing a local kubernetes nodes
+Packer manifests to create images via QEMU for providing a local kubernetes nodes
 
-# Build the images (Ubuntu 22.04 based)
+# Build the images (Ubuntu 24.04 based)
 
 Install packer (https://developer.hashicorp.com/packer/downloads)
 
-review the `source` section of the manifests and change to the correct base image
-
-```
-source "libvirt" "..." {
-  volume {
-    source {    
-    ...
-      urls = [...]        
-```
-
-after
-
+and then
 
 ```
 packer init . && packer build .

@@ -37,9 +37,9 @@ resource "libvirt_domain" "worker-machine" {
   xml { # para a q35 o cdrom necessita de ser sata
     xslt = file("lib-virt/q35-cdrom-model.xslt")
   }
-  qemu_agent = true
+  #qemu_agent = true
 
-  firmware  = "${local.uefi_location_files}/OVMF_CODE.fd"
+  firmware  = "${local.uefi_location_files}/OVMF_CODE_4M.fd"
   cloudinit = libvirt_cloudinit_disk.worker_cloudinit[each.key].id
 
   cpu {

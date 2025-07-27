@@ -2,10 +2,10 @@
 build {
 
   sources = [
-    "source.libvirt.k8s"
+    "source.qemu.k8s"
   ]
 
-  provisioner "shell" { 
+  provisioner "shell" {
     inline = [
       "/usr/bin/cloud-init status --wait",
     ]
@@ -18,21 +18,21 @@ build {
   }
 
   provisioner "shell" {
-    scripts = [ "./files/packages/00-install-utils.sh" ]
+    scripts = ["./files/packages/00-install-utils.sh"]
   }
 
   provisioner "shell" {
     environment_vars = ["INSTALLABLE_K8S_VERSION=${var.k8s_version}"]
-    script = "./files/packages/01-install-k8s-dependencies.sh"
-  }  
-
-  provisioner "shell" {
-    scripts = [ "./files/packages/02-install-haproxy.sh" ]
+    script           = "./files/packages/01-install-k8s-dependencies.sh"
   }
 
   provisioner "shell" {
-    environment_vars = ["INSTALLABLE_K8S_VERSION=${var.k8s_version}"]    
-    scripts = [ "./files/scripts/01-configure-os-for-k8s.sh" ]
+    scripts = ["./files/packages/02-install-haproxy.sh"]
+  }
+
+  provisioner "shell" {
+    environment_vars = ["INSTALLABLE_K8S_VERSION=${var.k8s_version}"]
+    scripts          = ["./files/scripts/01-configure-os-for-k8s.sh"]
   }
 
   provisioner "shell" {

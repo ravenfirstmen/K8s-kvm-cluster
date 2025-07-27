@@ -18,17 +18,17 @@ variable "network_domain" {
 # Volumes
 variable "base_volume_pool" {
   type    = string
-  default = "Ubuntu22.04"
+  default = "Ubuntu24.04"
 }
 
 variable "base_volume_name" {
   type    = string
-  default = "Ubuntu-22.04-LTS-With-K8s.qcow2"
+  default = "Ubuntu-24.04-LTS-With-K8s.img"
 }
 
 variable "k8s_version" {
   type    = string
-  default = "1.26.4"
+  default = "1.32.7"
 }
 
 variable "cluster_name" {
