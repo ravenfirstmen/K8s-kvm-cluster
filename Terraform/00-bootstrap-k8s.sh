@@ -1,6 +1,7 @@
 #!/bin/bash
 
 TMP_DIR=./tmp
+KUBERNETES_VERSION=1.32.7
 
 if [ -d "$TMP_DIR" ];
 then
@@ -22,7 +23,7 @@ CONFIG_FILE=".kube/config"
 LOCAL_CONFIG_FILE="$TMP_DIR/kubectl-config"
 
 ssh -i ssh-$CLUSTER_NAME-key.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" ubuntu@$CONTROLLER <<EOT
-  sudo kubeadm init --kubernetes-version v1.26.4 --control-plane-endpoint $CONTROLLER_FQDN --pod-network-cidr "10.0.0.0/16" --service-cidr "10.2.0.0/16"
+  sudo kubeadm init --kubernetes-version v${KUBERNETES_VERSION} --control-plane-endpoint $CONTROLLER_FQDN --pod-network-cidr "10.0.0.0/16" --service-cidr "10.2.0.0/16"
   mkdir -p \$HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf \$HOME/.kube/config
   sudo chown $(id -u):$(id -g) \$HOME/.kube/config
