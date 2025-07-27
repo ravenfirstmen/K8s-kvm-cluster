@@ -18,4 +18,4 @@ spec:
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
   policyTypes:
-  - Ingress      
+  - Ingress

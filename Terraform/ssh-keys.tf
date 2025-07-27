@@ -14,4 +14,3 @@ resource "local_file" "public_key" {
   filename        = "./ssh-${var.cluster_name}-pub.pem"
   file_permission = "0600"
 }
-

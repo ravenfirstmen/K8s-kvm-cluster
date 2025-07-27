@@ -19,4 +19,4 @@ spec:
       app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
   policyTypes:
-  - Ingress      
+  - Ingress

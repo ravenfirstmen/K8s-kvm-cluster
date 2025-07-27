@@ -14,7 +14,7 @@ sudo cloud-init clean --logs --machine-id
 echo 'uninitialized' | sudo tee /etc/machine-id
 sudo chmod a-wx,a+r /etc/machine-id
 
-sudo tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg <<EOF 
+sudo tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg <<EOF
 datasource_list: [ NoCloud ]
 EOF
 

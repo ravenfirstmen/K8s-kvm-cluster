@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -e -v 
+set -e -v
 
-# Ensure swap is disabled. It should by default in cloud image but just in case 
+# Ensure swap is disabled. It should by default in cloud image but just in case
 sudo swapoff -a
 
 # Ensure the overlay and bridge drivers are enabled
@@ -15,7 +15,7 @@ EOF
 sudo modprobe overlay
 sudo modprobe br_netfilter
 
-# Ensure forward is enable 
+# Ensure forward is enable
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1

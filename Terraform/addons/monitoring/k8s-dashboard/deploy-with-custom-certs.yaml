@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          args: 
+          args:
             - --tls-cert-file=/tls.crt
             - --tls-key-file=/tls.key
-            - --namespace=kubernetes-dashboard            
+            - --namespace=kubernetes-dashboard
