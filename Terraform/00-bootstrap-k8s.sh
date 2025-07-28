@@ -12,6 +12,8 @@ mkdir -p $TMP_DIR
 
 terraform apply -auto-approve
 
+sleep 30
+
 # Execute to init the k8s cp
 CONTROLLER=$(terraform output -json control-pane | jq -r '.address')
 CONTROLLER_FQDN=$(terraform output -json control-pane | jq -r '.fqdn')
@@ -25,7 +27,7 @@ LOCAL_CONFIG_FILE="$TMP_DIR/kubectl-config"
 ssh -i ssh-$CLUSTER_NAME-key.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" ubuntu@$CONTROLLER <<EOT
   sudo kubeadm init --kubernetes-version v${KUBERNETES_VERSION} --control-plane-endpoint $CONTROLLER_FQDN --pod-network-cidr "10.0.0.0/16" --service-cidr "10.2.0.0/16"
   mkdir -p \$HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf \$HOME/.kube/config
+  sudo cp -f /etc/kubernetes/admin.conf \$HOME/.kube/config
   sudo chown $(id -u):$(id -g) \$HOME/.kube/config
   kubeadm token create --print-join-command > $JOIN_CMD_FILE_NAME
 EOT
@@ -49,6 +51,5 @@ then
 fi
 
 mkdir -p $HOME/.kube
-cp $LOCAL_CONFIG_FILE $HOME/.kube/config
-
+cp -f $LOCAL_CONFIG_FILE $HOME/.kube/config
 rm -rf $TMP_DIR
