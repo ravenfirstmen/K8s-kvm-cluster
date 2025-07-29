@@ -12,13 +12,14 @@ mkdir -p $TMP_DIR
 
 terraform apply -auto-approve
 
-sleep 30
+sleep 15
 
 # Execute to init the k8s cp
 CONTROLLER=$(terraform output -json control-pane | jq -r '.address')
 CONTROLLER_FQDN=$(terraform output -json control-pane | jq -r '.fqdn')
 CLUSTER_NAME=$(terraform output -raw cluster_name)
 WORKERS=($(terraform output -json workers | jq -r '.[].address'))
+LOAD_BALANCER=($(terraform output -json load-balancer | jq -r '.address'))
 JOIN_CMD_FILE_NAME="join-node.sh"
 JOIN_CMD="$TMP_DIR/$JOIN_CMD_FILE_NAME"
 CONFIG_FILE=".kube/config"
@@ -45,11 +46,34 @@ ssh -i ssh-$CLUSTER_NAME-key.pem -o "StrictHostKeyChecking no" -o "UserKnownHost
 EOT
 done
 
+echo "Join load balancer $LOAD_BALANCER ..."
+ssh -i ssh-$CLUSTER_NAME-key.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" ubuntu@$LOAD_BALANCER <<EOT
+    sudo $(cat $JOIN_CMD)
+EOT
+
 if [ ! -f "$LOCAL_CONFIG_FILE" ];
 then
   scp -i ssh-$CLUSTER_NAME-key.pem -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" ubuntu@$CONTROLLER:$CONFIG_FILE $LOCAL_CONFIG_FILE
 fi
 
 mkdir -p $HOME/.kube
-cp -f $LOCAL_CONFIG_FILE $HOME/.kube/config
+
+export KUBECONFIG=$LOCAL_CONFIG_FILE:~/.kube/config
+kubectl config view --flatten > $TMP_DIR/config
+cp -f $TMP_DIR/config ~/.kube/config
+
 rm -rf $TMP_DIR
+
+# Labels
+CONTROLLER_FQDN=$(terraform output -json control-pane | jq -r '.fqdn')
+kubectl label node ${CONTROLLER_FQDN} node-role.kubernetes.io/control-plane=true --overwrite
+kubectl label node ${CONTROLLER_FQDN} node-role=control-plane
+
+WORKERS=($(terraform output -json workers | jq -r '.[].fqdn'))
+for worker in ${WORKERS[@]};
+do
+  kubectl label node ${worker} node-role=worker --overwrite
+done
+
+LOAD_BALANCER=($(terraform output -json load-balancer | jq -r '.fqdn'))
+kubectl label node ${LOAD_BALANCER} node-role=load-balancer --overwrite
